@@ -1,4 +1,4 @@
-﻿var angularFormsApp = angular.module('angularFormsApp', ["ngRoute"]);
+﻿var angularFormsApp = angular.module('angularFormsApp', ['ngRoute','ui.bootstrap']);
 
 angularFormsApp.config(function ($routeProvider) {
     $routeProvider
@@ -19,11 +19,23 @@ angularFormsApp.config(function ($routeProvider) {
         })
 });
 
-angularFormsApp.controller("HomeController", function ($scope, $location, DataService) {
+angularFormsApp.controller("HomeController", function ($scope, $location, $uibModal, $log, DataService) {
 
     $scope.addNewEmployee = function () {
-        $location.path('/newEmployeeForm');
+        //$location.path('/newEmployeeForm');
+        var modalInstance = $uibModal.open({
+            templateUrl: 'app/EmployeeForm/efTemplate.html',
+            controller: 'efController',
+            windowClass: 'show',
+            backdropClass: 'show'
+        });
+        modalInstance.result.then(function (selectedItem) {
+            $ctrl.selected = selectedItem;
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
     };
+
     $scope.editEmployee = function (id) {
         $location.path('/editEmployeeForm/'+id);
     };
